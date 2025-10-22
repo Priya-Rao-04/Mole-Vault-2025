@@ -9,109 +9,197 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
-  body {
-    background: radial-gradient(circle at 50% 50%, #000000, #020b02, #001a09);
-    color: #00ff99;
-    font-family: 'Orbitron', sans-serif;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-  }
-
-  h1, h2, p {
-    text-shadow: 0 0 15px #00ff99;
-    letter-spacing: 1px;
-  }
-
-  button {
-    background-color: #00ff99;
-    color: black;
-    border: none;
-    padding: 12px 25px;
-    font-size: 16px;
-    border-radius: 12px;
-    cursor: pointer;
-    margin: 10px;
-    box-shadow: 0 0 10px #00ff99;
-    transition: 0.3s;
-    font-weight: 600;
-    letter-spacing: 0.8px;
-  }
-
-  button:hover {
-    background-color: #00cc77;
-    transform: scale(1.05);
-  }
-
-  .hidden { display: none; }
-
-  .question {
-    margin: 40px auto;
-    width: 80%;
-    max-width: 600px;
-    background-color: rgba(0, 255, 153, 0.1);
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: 0 0 25px #00ff99;
-  }
-
-  .option {
-    display: block;
-    background-color: #111;
-    margin: 10px auto;
-    padding: 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    width: 70%;
-    transition: 0.3s;
-    font-weight: 500;
-  }
-
-  .option:hover {
-    background-color: #00ff99;
-    color: black;
-  }
-
-  #result {
-    font-size: 1.4em;
-    margin-top: 30px;
-    font-weight: 600;
-  }
-
-  canvas.confetti {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-  }
+body {
+  background: radial-gradient(circle at 50% 50%, #000000, #020b02, #001a09);
+  color: #00ff99;
+  font-family: 'Orbitron', sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+h1, h2, p { text-shadow: 0 0 15px #00ff99; letter-spacing: 1px; }
+button {
+  background-color: #00ff99; color: black; border: none; padding: 12px 25px;
+  font-size: 16px; border-radius: 12px; cursor: pointer; margin: 10px;
+  box-shadow: 0 0 10px #00ff99; transition: 0.3s; font-weight: 600; letter-spacing: 0.8px;
+}
+button:hover { background-color: #00cc77; transform: scale(1.05); }
+.hidden { display: none; }
+.question { margin: 40px auto; width: 80%; max-width: 600px;
+  background-color: rgba(0,255,153,0.1); padding: 20px; border-radius: 20px; box-shadow:0 0 25px #00ff99;
+}
+.option { display: block; background-color: #111; margin: 10px auto; padding: 10px; border-radius: 10px; cursor:pointer; width:70%; transition:0.3s; font-weight:500;}
+.option:hover { background-color: #00ff99; color:black; }
+canvas.confetti { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; }
+#quiz-master { width: 120px; margin: 20px auto; display: block; }
 </style>
 </head>
 <body>
-  <div id="start-screen">
-    <h1>🧪 MOLE VAULT 2025 🧬</h1>
-    <p>Welcome, young chemist! Crack 6 numerical riddles to prove you’re the <b>Mole Master!</b></p>
-    <button id="start-btn">Start the Challenge ➜</button>
-  </div>
 
-  <div class="hidden" id="quiz-screen">
-    <h2 id="question"></h2>
-    <div id="options"></div>
-    <button id="next-btn" class="hidden">Next ➜</button>
-  </div>
+<!-- Start Screen -->
+<div id="start-screen">
+  <h1>🧪 MOLE VAULT 2025 🧬</h1>
+  <p>Welcome, young chemist! Crack 6 numerical riddles to prove you’re the <b>Mole Master!</b></p>
+  <button id="start-btn">Start the Challenge ➜</button>
+</div>
 
-  <div class="hidden" id="result-screen">
-    <h1>⚛ Vault Unlocked! ⚛</h1>
-    <p id="score"></p>
-    <p id="comment"></p>
-    <button onclick="location.reload()">Play Again 🔁</button>
-  </div>
+<!-- Quiz Screen -->
+<div class="hidden" id="quiz-screen">
+  <img id="quiz-master" src="https://i.ibb.co/3pKzF4H/scientist-cartoon.png" alt="Quiz Master">
+  <h2 id="question"></h2>
+  <div id="options"></div>
+  <button id="next-btn" class="hidden">Next ➜</button>
+</div>
 
-  <canvas class="confetti hidden" id="confetti"></canvas>
+<!-- Result Screen -->
+<div class="hidden" id="result-screen">
+  <h1>⚛ Vault Unlocked! ⚛</h1>
+  <p id="score"></p>
+  <p id="comment"></p>
+  <button onclick="location.reload()">Play Again 🔁</button>
+</div>
 
-  <!-- Sounds -->
-  <audio id="bg-music" loop>
-    <source src="https://cdn.pixabay.com/download/audio/2023/04/03/audio_6f8bb7c278.mp3?filename=futuristic-lab-beat-143266.mp3" type="audio/mp3">
-  </audio>
-  <audio id="correct-sound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5117b9eb42.mp3?filename=correct-answer-2-89675.mp3"></audio>
-  <audio id="wrong-sound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_62d260e70c.mp3?filename=
+<canvas class="confetti hidden" id="confetti"></canvas>
+
+<!-- Sounds -->
+<audio id="bg-music" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2023/04/03/audio_6f8bb7c278.mp3?filename=futuristic-lab-beat-143266.mp3" type="audio/mp3">
+</audio>
+<audio id="correct-sound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5117b9eb42.mp3?filename=correct-answer-2-89675.mp3"></audio>
+<audio id="wrong-sound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_62d260e70c.mp3?filename=error-126627.mp3"></audio>
+<audio id="click-sound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_3b594dfb4c.mp3?filename=click-124467.mp3"></audio>
+
+<script>
+const startBtn = document.getElementById("start-btn");
+const startScreen = document.getElementById("start-screen");
+const quizScreen = document.getElementById("quiz-screen");
+const resultScreen = document.getElementById("result-screen");
+const questionElement = document.getElementById("question");
+const optionsElement = document.getElementById("options");
+const nextBtn = document.getElementById("next-btn");
+const scoreElement = document.getElementById("score");
+const commentElement = document.getElementById("comment");
+const bgMusic = document.getElementById("bg-music");
+const correctSound = document.getElementById("correct-sound");
+const wrongSound = document.getElementById("wrong-sound");
+const clickSound = document.getElementById("click-sound");
+const confettiCanvas = document.getElementById("confetti");
+const confettiCtx = confettiCanvas.getContext("2d");
+let confettiPieces = [];
+
+confettiCanvas.width = window.innerWidth;
+confettiCanvas.height = window.innerHeight;
+
+function startConfetti() {
+  confettiCanvas.classList.remove("hidden");
+  for (let i=0;i<200;i++){
+    confettiPieces.push({
+      x:Math.random()*window.innerWidth,
+      y:Math.random()*window.innerHeight- window.innerHeight,
+      r:Math.random()*4+1,
+      d:Math.random()*5+2,
+      color:`hsl(${Math.random()*360},100%,50%)`
+    });
+  }
+  animateConfetti();
+}
+function animateConfetti(){
+  confettiCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+  confettiPieces.forEach(p=>{
+    p.y+=p.d;
+    if(p.y>window.innerHeight) p.y=-10;
+    confettiCtx.beginPath();
+    confettiCtx.arc(p.x,p.y,p.r,0,2*Math.PI);
+    confettiCtx.fillStyle=p.color;
+    confettiCtx.fill();
+  });
+  requestAnimationFrame(animateConfetti);
+}
+
+// Generate 50 sets of 6 easy numerical questions
+const baseQuestions = [
+  {q:"Avogadro's number (approx ×10²³)?", a:"6.022"},
+  {q:"Atomic number of Oxygen?", a:"8"},
+  {q:"Boiling point of water °C?", a:"100"},
+  {q:"Freezing point of water °C?", a:"0"},
+  {q:"Number of protons in Hydrogen?", a:"1"},
+  {q:"Number of electrons in Helium?", a:"2"},
+  {q:"Molecular weight of H₂O?", a:"18"},
+  {q:"Atomic number of Carbon?", a:"6"},
+  {q:"Melting point of ice °C?", a:"0"},
+  {q:"1 mole = ___ particles", a:"6.022e23"},
+  {q:"Atomic number of Nitrogen?", a:"7"},
+  {q:"Number of neutrons in Hydrogen?", a:"0"},
+  {q:"Atomic mass of Carbon?", a:"12"},
+  {q:"Atomic number of Sodium?", a:"11"},
+  {q:"Atomic number of Chlorine?", a:"17"}
+];
+
+let questionSets = [];
+for(let i=0;i<50;i++){
+  questionSets.push(baseQuestions.sort(()=>0.5-Math.random()).slice(0,6));
+}
+const questions = questionSets[Math.floor(Math.random()*50)];
+
+let currentQuestionIndex=0;
+let score=0;
+
+startBtn.addEventListener("click",()=>{
+  clickSound.play();
+  bgMusic.play();
+  startScreen.classList.add("hidden");
+  quizScreen.classList.remove("hidden");
+  showQuestion();
+});
+
+function showQuestion(){
+  nextBtn.classList.add("hidden");
+  const current = questions[currentQuestionIndex];
+  questionElement.textContent = current.q;
+  optionsElement.innerHTML="";
+  const choices = [
+    current.a,
+    (parseFloat(current.a)+1).toString(),
+    (parseFloat(current.a)-1).toString(),
+    (parseFloat(current.a)+2).toString()
+  ].sort(()=>0.5-Math.random());
+  choices.forEach(opt=>{
+    const div=document.createElement("div");
+    div.textContent=opt;
+    div.classList.add("option");
+    div.addEventListener("click",()=>selectOption(opt,div,current.a));
+    optionsElement.appendChild(div);
+  });
+}
+
+function selectOption(selected, div, correct){
+  const allOptions=document.querySelectorAll(".option");
+  allOptions.forEach(o=>o.style.pointerEvents="none");
+  if(selected===correct){
+    div.style.backgroundColor="#00ff99"; div.style.color="black"; correctSound.play(); score++;
+  } else{ div.style.backgroundColor="red"; wrongSound.play();}
+  nextBtn.classList.remove("hidden");
+}
+
+nextBtn.addEventListener("click",()=>{
+  clickSound.play();
+  currentQuestionIndex++;
+  if(currentQuestionIndex<questions.length) showQuestion();
+  else showResult();
+});
+
+function showResult(){
+  quizScreen.classList.add("hidden");
+  resultScreen.classList.remove("hidden");
+  scoreElement.textContent=`You scored ${score}/6`;
+  if(score===1) commentElement.textContent="Work hard on chemistry skills 💪";
+  else if(score===2) commentElement.textContent="Keep working hard!";
+  else if(score===3) commentElement.textContent="Polish your chemistry skills!";
+  else if(score===4) commentElement.textContent="Almost there, pal!";
+  else if(score===5) commentElement.textContent="You got the skills, dude!";
+  else if(score===6){ commentElement.textContent="🥇 Mole Master 2025 🧠💥"; startConfetti();}
+}
+</script>
+</body>
+</html>
